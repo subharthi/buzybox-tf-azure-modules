@@ -1,0 +1,18 @@
+#cloud-config
+${yamlencode({
+  users = concat(
+    ["default"],
+    [
+    for user in user_accounts: {
+      name                = user.username
+      gecos               = user.username
+      ssh_authorized_keys = [user.public_key]
+      lock_passwd         = true
+      groups              = "users"
+      shell               = "/bin/bash"
+    }
+  ])
+  packages = [
+    "jp",
+  ]
+})}
